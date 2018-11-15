@@ -42,7 +42,7 @@ const generateCSV = async (m, n, it) => {
         counter += 1;
       }
       csvStream.uncork();
-      await Promise.resolve(stream.uncork());
+      // await Promise.resolve(stream.uncork());
     };
 
     for (let i = 1; i <= m; i++) {
@@ -55,5 +55,5 @@ const generateCSV = async (m, n, it) => {
   }
   console.timeEnd();
 };
-
+//ignore
 generateCSV(1000, 100, 100);
