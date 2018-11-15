@@ -18,11 +18,12 @@ const generateCSV = async (m, n, it) => {
   let counter = 1;
 
   console.time();
+
+  // establish connection to csv file
   csvStream.pipe(stream);
   while (iterations <= it) {
-    //   stream.cork();
-
     const repeat = async () => {
+      // begin buffering memory
       csvStream.cork();
 
       for (let j = 0; j < n; j++) {
@@ -38,9 +39,12 @@ const generateCSV = async (m, n, it) => {
           address: `'${faker.address.streetAddress()}'`
         };
 
+        // write object data to csv file
         await csvStream.write(obj);
         counter += 1;
       }
+
+      // flush buffered memory
       csvStream.uncork();
       // await Promise.resolve(stream.uncork());
     };
