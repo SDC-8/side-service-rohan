@@ -1,9 +1,23 @@
 module.exports = {
   fields: {
-    name: "text",
-    surname: "text",
-    age: "int",
-    created: "timestamp"
+    id: "int",
+    saledate: "date",
+    beds: "int",
+    baths: "int",
+    sqft: "int",
+    streetaddress: "varchar"
   },
   key: ["name"]
 };
+
+/*
+
+id serial NOT NULL,
+    price integer,
+    saledate date,
+    beds integer,
+    baths integer,
+    sqft integer,
+    streetaddress character varying(50)
+
+*/
