@@ -18,6 +18,7 @@
     "body-parser": "^1.18.3",
     "eslint-config-prettier": "^3.1.0",
     "express": "^4.16.4",
+    "express-cassandra": "^2.2.3",
     "faker": "^4.1.0",
     "mongodb": "^3.1.8",
     "mongoose": "^5.3.8",
