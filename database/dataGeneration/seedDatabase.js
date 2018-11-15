@@ -1,19 +1,12 @@
 const pg = require("pg");
+const CONNECTION = require("CONNECTION");
 
-const connection = "postgres://rohan:09101990@localhost:5432/sdc";
+const connection = CONNECTION;
 
 const db = new pg.Client(connection);
 
 db.connect();
 
-// const db = new Client({
-//   user: "rohan",
-//   host: "postgres://rohan:09101990@localhost:5432/sdc",
-//   database: "sdc",
-//   password: "09101990",
-//   port: 5431
-// });
-// db.connect();
 db.query("CREATE SCHEMA IF NOT EXISTS sdc_houses;");
 
 db.query(`CREATE TABLE IF NOT EXISTS sdc_houses.sdc_houses_tbl (
