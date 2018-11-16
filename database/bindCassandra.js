@@ -1,4 +1,5 @@
 const ExpressCassandra = require("express-cassandra");
+const faker = require("faker");
 
 const models = ExpressCassandra.createClient({
   clientOptions: {
@@ -16,19 +17,11 @@ const models = ExpressCassandra.createClient({
   }
 });
 
-/*
- id: "int",
-    saledate: "date",
-    beds: "int",
-    baths: "int",
-    sqft: "int",
-    streetaddress: "varchar"
-*/
-
 const HouseModel = models.loadSchema("House", {
   fields: {
     id: "int",
-    saledate: "text",
+    price: "int",
+    selldate: "text",
     beds: "int",
     baths: "int",
     sqft: "int",
@@ -49,36 +42,61 @@ HouseModel.syncDB(function(err, result) {
   // result == false if no schema change was detected in your models
 });
 
-const home1 = new models.instance.House({
-  id: 2,
-  saledate: "2017-05-05",
-  beds: 5,
-  baths: 4,
-  sqft: 1250,
-  streetaddress: "The City 100"
-});
+const saveToCassandra = async n => {
+  for (let j = 0; j < n; j++) {
+    let date = new Date(faker.date.past(10, "2010-05-23"));
 
-home1.save({ if_not_exist: true }, err => {
-  if (err) {
-    console.error(err);
-    return;
-  } else {
-    console.log("woohoo!");
+    let home1 = new models.instance.House({
+      id: j,
+      price: Number(faker.random.number({ min: 100000, max: 1000000 })),
+      selldate: `${date.getFullYear()}-${date.getMonth() +
+        1}-${date.getDate()}`,
+      beds: Number(faker.random.number({ min: 1, max: 6 })),
+      baths: Number(faker.random.number({ min: 1, max: 6 })),
+      sqft: Number(faker.random.number({ min: 450, max: 2000 })),
+      streetaddress: `${faker.address.streetAddress()}`
+    });
+
+    home1.save({ if_not_exist: true }, err => {
+      err ? console.error(err) : true;
+    });
+
+    // const doTheSave = async () => {
+    //   home1.save({ if_not_exist: true }, err => {
+    //     err ? console.error(err) : true;
+    //   });
+    // };
+    // await doTheSave();
   }
-});
+};
 
+const wrapper = async (n, m) => {
+  console.time();
+  for (let i = 0; i < m; i++) {
+    await saveToCassandra(n);
+  }
+  console.timeEnd();
+  console.log(":)");
+};
+
+// wrapper(2000, 5);
+// node --max-old-space-size=8192 dataGeneration-Cassandra.js
 // models.instance.House.findOne(
-models.instance.House.findOne(
-  {
-    id: 2
-  },
-  (err, homeOne) => {
-    if (err) {
-      console.error(err);
-      return;
-    } else {
-      console.log("here ya go _____________");
-      console.log(homeOne);
-    }
-  }
-);
+// models.instance.House.findOne(
+//   {
+//     id: 10
+//   },
+//   (err, homeOne) => {
+//     if (err) {
+//       console.error(err);
+//       return;
+//     } else {
+//       console.log("here ya go _____________");
+//       console.log(homeOne);
+//     }
+//   }
+// );
+
+// copy mykeyspace.“House” (id, saledate, beds, baths, sqft) from  /path/*.csv’;
+
+// COPY mykeyspace.House (id,price,selldate,beds,baths,sqft,streetaddress) FROM 'cassandraData0.csv';

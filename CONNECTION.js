@@ -1,1 +1,1 @@
-module.exports = "postgres://rohan:09101990@localhost:5432/sdc";
+module.exports = "postgres://rohan:12345@localhost:5432/sdc";

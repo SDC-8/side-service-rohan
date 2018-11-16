@@ -13,7 +13,7 @@ let headers = [
 ];
 // let csvStream = csv.createWriteStream({ headers: headers });
 
-let counter = 1;
+let count = 1;
 
 const generateCSV = async (m, n, it, name) => {
   const stream = fs.createWriteStream(`cassandraData${name}.csv`);
@@ -30,21 +30,21 @@ const generateCSV = async (m, n, it, name) => {
       csvStream.cork();
 
       for (let j = 0; j < n; j++) {
-        let date = new Date(faker.date.past(10, "2010-05-23"));
+        let date = new Date(faker.date.past(6, "2010-05-23"));
         let obj = {
-          id: counter,
+          id: count,
           price: faker.random.number({ min: 100000, max: 1000000 }),
           sellDate: `'${date.getFullYear()}-${date.getMonth() +
             1}-${date.getDate()}'`,
           beds: faker.random.number({ min: 1, max: 6 }),
           baths: faker.random.number({ min: 1, max: 6 }),
-          squareFeet: faker.random.number({ min: 450, max: 2000 }),
-          address: `'${faker.address.streetAddress()}'`
+          sqft: faker.random.number({ min: 450, max: 2000 }),
+          streetaddress: `'${faker.address.streetAddress()}'`
         };
 
         // write object data to csv file
         await csvStream.write(obj);
-        counter += 1;
+        count += 1;
       }
 
       // flush buffered memory
@@ -54,7 +54,7 @@ const generateCSV = async (m, n, it, name) => {
 
     for (let i = 1; i <= m; i++) {
       await repeat();
-      console.log(`${it - iterations} iterations left!`);
+      // console.log(`${n * m * it} records made!`);
     }
 
     iterations += 1;
@@ -66,8 +66,10 @@ const generateCSV = async (m, n, it, name) => {
 
 function run() {
   console.time();
+
   for (let int = 0; int < 2; int++) {
-    generateCSV(10, 10, 1, int);
+    // generateCSV(50, 1000, 10, int);
+    generateCSV(5, 10, 10, int);
   }
   console.timeEnd();
 }
@@ -76,4 +78,13 @@ run();
 
 // copy mykeyspace.“Tents” (id, product_id, rating, reviewer, title, body, recommend, helpful, unhelpful, posting_date) from  /path/*.csv’;
 
-// copy mykeyspace.“House” (id, product_id, rating, reviewer, title, body, recommend, helpful, unhelpful, posting_date) from  /path/*.csv’;
+// copy mykeyspace.“House” (id, price, selldate, beds, baths, body, sqft, streetaddress) from  /cassandraData0.csv’;
+
+// COPY mykeyspace."House" (id, price, selldate, beds, baths, sqft, streetaddress) FROM './cassandraData0.csv');
+("/Users/nancynobis/Documents/projects/HackReactor/SDC/sidebar-service/database/dataGeneration");
+
+// COPY mykeyspace."House" (id, price, selldate, beds, baths, sqft, streetaddress)
+// FROM '../../Documents/projects/HackReactor/SDC/sidebar-service/database/dataGeneration/cassandraData0.csv' WITH HEADER = TRUE ;
+
+COPY mykeyspace."House" (id, price, selldate, beds, baths, sqft, streetaddress) 
+FROM '../../Documents/projects/HackReactor/SDC/sidebar-service/database/dataGeneration/cassandraData0.csv' WITH HEADER = TRUE ;
