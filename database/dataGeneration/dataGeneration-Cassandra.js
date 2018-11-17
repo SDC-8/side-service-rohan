@@ -8,12 +8,10 @@ let headers = [
   "sellDate",
   "beds",
   "baths",
-  "squareFeet",
-  "address"
+  "sqft",
+  "streetaddress"
 ];
 // let csvStream = csv.createWriteStream({ headers: headers });
-
-let count = 1;
 
 const generateCSV = async (m, n, it, name) => {
   const stream = fs.createWriteStream(`cassandraData${name}.csv`);
@@ -21,6 +19,7 @@ const generateCSV = async (m, n, it, name) => {
   let iterations = 1;
 
   //   console.time();
+  let count = name * 1000000 + 1;
 
   // establish connection to csv file
   csvStream.pipe(stream);
@@ -34,12 +33,12 @@ const generateCSV = async (m, n, it, name) => {
         let obj = {
           id: count,
           price: faker.random.number({ min: 100000, max: 1000000 }),
-          sellDate: `'${date.getFullYear()}-${date.getMonth() +
-            1}-${date.getDate()}'`,
+          sellDate: `${date.getFullYear()}-${date.getMonth() +
+            1}-${date.getDate()}`,
           beds: faker.random.number({ min: 1, max: 6 }),
           baths: faker.random.number({ min: 1, max: 6 }),
           sqft: faker.random.number({ min: 450, max: 2000 }),
-          streetaddress: `'${faker.address.streetAddress()}'`
+          streetaddress: faker.address.streetAddress()
         };
 
         // write object data to csv file
@@ -67,9 +66,9 @@ const generateCSV = async (m, n, it, name) => {
 function run() {
   console.time();
 
-  for (let int = 0; int < 2; int++) {
-    // generateCSV(50, 1000, 10, int);
-    generateCSV(5, 10, 10, int);
+  for (let int = 5; int < 10; int++) {
+    generateCSV(50, 2000, 10, int);
+    // generateCSV(5, 10, 10, int);
   }
   console.timeEnd();
 }
@@ -81,10 +80,10 @@ run();
 // copy mykeyspace.“House” (id, price, selldate, beds, baths, body, sqft, streetaddress) from  /cassandraData0.csv’;
 
 // COPY mykeyspace."House" (id, price, selldate, beds, baths, sqft, streetaddress) FROM './cassandraData0.csv');
-("/Users/nancynobis/Documents/projects/HackReactor/SDC/sidebar-service/database/dataGeneration");
+// ("/Users/nancynobis/Documents/projects/HackReactor/SDC/sidebar-service/database/dataGeneration");
 
 // COPY mykeyspace."House" (id, price, selldate, beds, baths, sqft, streetaddress)
 // FROM '../../Documents/projects/HackReactor/SDC/sidebar-service/database/dataGeneration/cassandraData0.csv' WITH HEADER = TRUE ;
 
-COPY mykeyspace."House" (id, price, selldate, beds, baths, sqft, streetaddress) 
-FROM '../../Documents/projects/HackReactor/SDC/sidebar-service/database/dataGeneration/cassandraData0.csv' WITH HEADER = TRUE ;
+// COPY mykeyspace."House" (id, price, selldate, beds, baths, sqft, streetaddress)
+// FROM '../../../Documents/projects/HackReactor/SDC/sidebar-service/database/dataGeneration/cassandraData0.csv' WITH HEADER = TRUE ;
