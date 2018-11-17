@@ -13,9 +13,11 @@ let headers = [
 ];
 let csvStream = csv.createWriteStream({ headers: headers });
 
-const generateCSV = async (m, n, it) => {
+let counter = 1;
+
+const generateCSV = async (m, n, it, start) => {
   let iterations = 1;
-  let counter = 1;
+  // let counter = 1;
 
   console.time();
 
@@ -29,7 +31,7 @@ const generateCSV = async (m, n, it) => {
       for (let j = 0; j < n; j++) {
         let date = new Date(faker.date.past(10, "2010-05-23"));
         let obj = {
-          id: counter,
+          id: start,
           price: faker.random.number({ min: 100000, max: 1000000 }),
           sellDate: `'${date.getFullYear()}-${date.getMonth() +
             1}-${date.getDate()}'`,
@@ -41,7 +43,7 @@ const generateCSV = async (m, n, it) => {
 
         // write object data to csv file
         await csvStream.write(obj);
-        counter += 1;
+        start += 1;
       }
 
       // flush buffered memory
@@ -60,4 +62,14 @@ const generateCSV = async (m, n, it) => {
   console.timeEnd();
 };
 //ignore
-generateCSV(1000, 100, 100);
+// const go = async () => {
+//   if (global.gc) {
+//     await generateCSV(1000, 100, 10, 1);
+//     global.gc();
+//     await generateCSV(1000, 100, 10, 1000000);
+//     global.gc();
+//     await generateCSV(1000, 100, 10, 2000000);
+//   }
+// };
+
+// go();
