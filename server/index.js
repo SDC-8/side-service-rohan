@@ -1,11 +1,14 @@
+require("newrelic");
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require("express");
-const Bars = require("../database/Bars.js");
+const Bars = require("../database/BarsPG.js");
 const path = require("path");
 
 const PORT = 3002;
+
+app.disable("x-powered-by");
 
 // app.use(cors());
 app.use(bodyParser.json());
@@ -13,10 +16,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/../client/dist"));
 
 app.get("/api/sidebar/", function(req, res) {
-  Bars.getInfo(req.params.page, res);
+  Bars.getInfo(1, res);
 });
 
 app.get("/api/sidebar/:page", function(req, res) {
+  console.log(req.params);
   Bars.getInfo(req.params.page, res);
 });
 
