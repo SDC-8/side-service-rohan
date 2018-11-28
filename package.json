@@ -14,15 +14,19 @@
     "db-setup": "node database/seed.js"
   },
   "dependencies": {
+    "artillery": "^1.6.0-25",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "eslint-config-prettier": "^3.1.0",
     "express": "^4.16.4",
     "express-cassandra": "^2.2.3",
     "faker": "^4.1.0",
+    "loadtest": "^3.0.4",
     "mongodb": "^3.1.8",
     "mongoose": "^5.3.8",
+    "newrelic": "^4.11.0",
     "nodemon": "^1.18.5",
+    "pg": "7.6.1",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "sinon": "^7.1.1"
