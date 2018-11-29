@@ -12,7 +12,9 @@ app.get("*.js", function(req, res, next) {
   next();
 });
 
-const PORT = 3002;
+const PORT1 = 3002;
+const PORT2 = 3003;
+// const PORT3 = 3004;
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -62,6 +64,14 @@ app.delete("/api/sidebar/:page", (req, res) => {
   Bars.deleteOne(req.params.page, res);
 });
 
-app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);
+app.listen(PORT1, () => {
+  console.log(`listening on port ${PORT1}`);
 });
+
+app.listen(PORT2, () => {
+  console.log(`listening on port ${PORT2}`);
+});
+
+// app.listen(PORT3, () => {
+//   console.log(`listening on port ${PORT3}`);
+// });

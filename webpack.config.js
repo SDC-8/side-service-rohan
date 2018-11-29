@@ -55,7 +55,7 @@ module.exports = {
     new CompressionPlugin({
       algorithm: "gzip",
       test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
+      threshold: 10,
       minRatio: 0.8
     })
   ]
