@@ -6,7 +6,22 @@ const cors = require("express");
 const Bars = require("../database/BarsPG.js");
 const path = require("path");
 
+app.get("*.js", function(req, res, next) {
+  req.url = req.url + ".gz";
+  res.set("Content-Encoding", "gzip");
+  next();
+});
+
 const PORT = 3002;
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 
 app.disable("x-powered-by");
 
