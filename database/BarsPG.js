@@ -75,14 +75,20 @@ const pool = new Pool({
 // };
 
 let getInfo = (req, res) => {
+  console.log("req", req);
+  console.log("req + 5", req + 5);
   pool.connect((err, client, release) => {
     if (err) {
       return console.error("Error acquiring client", err.stack);
     }
     client
-      .query(`SELECT * FROM sdc_houses.sdc_houses_tbl WHERE id = ${req}`)
-      .then(house => {
-        res.send(house);
+      .query(
+        `SELECT * FROM sdc_houses.sdc_houses_tbl WHERE id > ${req} AND id < ${Number(
+          req
+        ) + 5}`
+      )
+      .then(houses => {
+        res.send(houses);
       });
   });
 };
