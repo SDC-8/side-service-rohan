@@ -88,6 +88,7 @@ let getInfo = (req, res) => {
         ) + 5}`
       )
       .then(houses => {
+        client.end();
         res.send(houses);
       });
   });
